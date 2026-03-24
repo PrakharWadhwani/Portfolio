@@ -1,0 +1,35 @@
+.section {
+  max-width: 1100px;
+  margin: 100px auto;
+  padding: 0 2rem;
+}
+
+.label {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.item {
+  padding: 1rem 2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--card-bg);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.item:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-pink);
+  transform: translateY(-3px);
+}

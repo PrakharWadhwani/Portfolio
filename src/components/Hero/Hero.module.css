@@ -1,0 +1,178 @@
+/* src/components/Hero/Hero.module.css */
+
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 140px 2rem 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+  min-height: 85vh;
+}
+
+.content {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.label {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--primary-accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem); 
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-main);
+  transition: color 0.4s ease;
+}
+
+.name {
+  font-size: clamp(2.4rem, 6vw, 4.2rem); 
+  font-weight: 800;
+  color: var(--primary-accent);
+  display: block; 
+  white-space: nowrap; 
+  margin: 0.3rem 0; 
+}
+
+.description {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 500px;
+}
+
+/* --- Buttons --- */
+.cta_container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap; 
+}
+
+.primary_button {
+  background-color: var(--text-main);
+  color: var(--bg-color);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 1px solid var(--text-main);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.design_button {
+  background-color: transparent;
+  color: var(--primary-accent);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 1.5px solid var(--primary-accent);
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.design_button:hover {
+  background-color: var(--primary-accent);
+  color: var(--bg-color);
+  transform: translateY(-2px);
+}
+
+.secondary_button {
+  background-color: transparent;
+  color: var(--text-main);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  transition: 0.3s;
+}
+
+/* --- Profile Image --- */
+.image_container {
+  flex: 0.8;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image_wrapper {
+  position: relative;
+}
+
+.profile_pic {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  filter: grayscale(10%);
+  transition: 0.5s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.glow_backdrop {
+  position: absolute;
+  top: -5%;
+  right: -5%;
+  width: 110%;
+  height: 110%;
+  background-color: var(--primary-accent);
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+  transition: 0.5s ease;
+}
+
+.image_wrapper:hover .profile_pic {
+  transform: translateY(-10px);
+  border-color: var(--primary-accent);
+  filter: grayscale(0%);
+}
+
+.image_wrapper:hover .glow_backdrop {
+  opacity: 0.4;
+}
+
+/* --- PHONE OPTIMIZATION --- */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding-top: 100px;
+    gap: 2.5rem;
+  }
+
+  .content {
+    align-items: center;
+  }
+
+  .name {
+    font-size: clamp(2rem, 10vw, 3rem);
+    white-space: normal; /* Allow wrap on very small phones */
+  }
+
+  .cta_container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primary_button, .design_button, .secondary_button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile_pic {
+    max-width: 280px;
+  }
+}

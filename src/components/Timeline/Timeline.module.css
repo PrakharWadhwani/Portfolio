@@ -1,0 +1,12 @@
+.section { max-width: 1100px; margin: 100px auto; padding: 0 2rem; }
+.label { font-family: monospace; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; }
+.timeline { margin-top: 3rem; border-left: 1px solid var(--border-color); padding-left: 2rem; display: flex; flex-direction: column; gap: 3rem; }
+.item { position: relative; }
+.item::before {
+  content: ''; position: absolute; left: calc(-2rem - 5px); top: 5px;
+  width: 9px; height: 9px; border-radius: 50%; background: var(--accent-gold);
+}
+.year { font-family: monospace; color: var(--accent-gold); }
+.content h3 { font-size: 1.5rem; margin: 5px 0; }
+.content h4 { color: var(--accent-pink); font-size: 1rem; margin-bottom: 10px; }
+.content p { color: var(--text-muted); max-width: 500px; }
