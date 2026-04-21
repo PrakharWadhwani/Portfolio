@@ -1,10 +1,8 @@
-/* =========================================
-   BASE LAYOUT
-========================================= */
-.section {
-  max-width: 1100px;
-  margin: 120px auto;
-  padding: 0 2rem;
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* This adds space between the category and the badge */
+  margin-bottom: 0.5rem; /* Adds breathing room above the title */
 }
 
 .label {
@@ -17,18 +15,25 @@
   display: block;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
+.section {
+  max-width: 1200px;
+  margin: 120px auto;
+  padding: 0 2rem;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Auto-responsive grid */
+  gap: 3rem;
+  margin-top: 2rem;
 }
 
 .card_wrapper {
-  width: 100%;
+  position: relative;
+  will-change: transform; /* Hardware acceleration to prevent lag */
 }
 
-/* =========================================
-   CARD DESIGN & HOVER PHYSICS
-========================================= */
 .card {
   display: flex;
   justify-content: space-between;
@@ -40,7 +45,6 @@
   color: inherit;         
 }
 
-/* The Luxury Slide Effect */
 .card:not(.disabled):hover {
   padding-left: 2rem;
   background-color: rgba(212, 175, 55, 0.02); /* Very faint gold tint */
@@ -51,20 +55,9 @@
   cursor: not-allowed;
 }
 
-/* =========================================
-   CARD CONTENT (Text, Tags, Badges)
-========================================= */
-.info {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 80%;
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+/* Ensure the navigation ID is at the section level to fix nav links */
+#work {
+  scroll-margin-top: 100px;
 }
 
 .category {
@@ -73,13 +66,15 @@
   color: var(--text-muted, #888);
   letter-spacing: 1px;
   text-transform: uppercase;
+  display: inline-block; /* Ensures margin/gap is respected */
 }
 
+/* Badge pulse for "Live Soon" status */
 .badge {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   padding: 0.2rem 0.8rem;
   border-radius: 50px;
-  background-color: rgba(212, 175, 55, 0.1);
+  background-color: rgba(21, 240, 28, 0.353);
   color: var(--accent-gold, #d4af37);
   border: 1px solid rgba(212, 175, 55, 0.3);
   animation: pulse 2s infinite;
@@ -89,166 +84,4 @@
   0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
   70% { box-shadow: 0 0 0 6px rgba(212, 175, 55, 0); }
   100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-}
-
-.title {
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 700;
-  line-height: 1.1;
-  transition: color 0.3s ease;
-  margin: 0.5rem 0;
-}
-
-.card:not(.disabled):hover .title {
-  color: var(--accent-gold, #d4af37);
-}
-
-.desc {
-  color: var(--text-muted, #888);
-  max-width: 600px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.tags {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.tag {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.4rem 1rem;
-  border: 1px solid var(--border-color, #333);
-  border-radius: 100px;
-  background-color: transparent;
-  transition: all 0.3s ease;
-  color: var(--text-muted, #888);
-}
-
-.card:hover .tag {
-  border-color: var(--accent-gold, #d4af37);
-  color: var(--accent-gold, #d4af37);
-}
-
-.arrow {
-  color: #555;
-  transition: transform 0.4s ease, color 0.4s ease;
-}
-
-/* Pushes arrow right on hover for links */
-.card:not(.disabled):not(.dropdown_card):hover .arrow {
-  color: var(--accent-gold, #d4af37);
-  transform: translateX(10px) translateY(-5px); 
-}
-
-
-/* =========================================
-   DROPDOWN ACCORDION LOGIC
-========================================= */
-.dropdown_card {
-  cursor: pointer;
-}
-
-.card_open {
-  padding-bottom: 2rem;
-  border-bottom-color: transparent; /* Removes line between card and dropdown items */
-}
-
-/* Arrow Rotation Animation */
-.rotated {
-  transform: rotate(180deg) !important;
-  color: var(--accent-gold, #d4af37) !important;
-}
-
-.dropdown_content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0 0 3.5rem 2rem;
-  border-bottom: 1px solid var(--border-color, #333);
-  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-@keyframes slideDown {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown_link {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.2rem 1.5rem;
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-color, #333);
-  border-radius: 8px;
-  color: var(--text-muted, #888);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  max-width: 600px;
-}
-
-.dropdown_link span {
-  flex-grow: 1;
-}
-
-.external_icon {
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.dropdown_link:hover {
-  border-color: var(--accent-gold, #d4af37);
-  color: #fff;
-  background-color: rgba(212, 175, 55, 0.05); /* Light gold glow */
-  transform: translateX(15px); /* Glides to the right on hover */
-}
-
-.dropdown_link:hover .external_icon {
-  opacity: 1;
-  transform: translateX(0);
-  color: var(--accent-gold, #d4af37);
-}
-
-
-/* =========================================
-   MOBILE RESPONSIVENESS
-========================================= */
-@media (max-width: 768px) {
-  .card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 2.5rem 0;
-  }
-  
-  .card:not(.disabled):hover {
-    padding-left: 0; /* Disable padding shift on mobile to prevent horizontal scrolling */
-  }
-
-  .arrow {
-    align-self: flex-end;
-  }
-  
-  .info {
-    max-width: 100%;
-  }
-
-  .dropdown_content {
-    padding-left: 0;
-  }
-  
-  .dropdown_link:hover {
-    transform: translateX(5px);
-  }
 }

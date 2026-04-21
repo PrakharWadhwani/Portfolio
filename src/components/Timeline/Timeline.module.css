@@ -1,10 +1,29 @@
 .section { max-width: 1100px; margin: 100px auto; padding: 0 2rem; }
 .label { font-family: monospace; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; }
 .timeline { margin-top: 3rem; border-left: 1px solid var(--border-color); padding-left: 2rem; display: flex; flex-direction: column; gap: 3rem; }
-.item { position: relative; }
+.item { 
+  position: relative; 
+  /* Add a smooth transition for the hover state if you want items to react */
+  transition: transform 0.3s ease;
+}
+
+.item:hover {
+  transform: translateX(30px);
+  transform: translateY(30px);
+}
+
 .item::before {
-  content: ''; position: absolute; left: calc(-2rem - 5px); top: 5px;
-  width: 9px; height: 9px; border-radius: 50%; background: var(--accent-gold);
+  content: ''; 
+  position: absolute; 
+  left: calc(-2rem - 5px); 
+  top: 5px;
+  width: 9px; 
+  height: 9px; 
+  border-radius: 50%; 
+  background: var(--accent-gold);
+  /* Added a small glow effect to the dot */
+  box-shadow: 0 0 10px var(--accent-gold);
+  z-index: 2;
 }
 .year { font-family: monospace; color: var(--accent-gold); }
 .content h3 { font-size: 1.5rem; margin: 5px 0; }

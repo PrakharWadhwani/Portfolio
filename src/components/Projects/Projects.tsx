@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Projects.module.css";
 import { ExternalLink, Lock, ChevronDown, LayoutGrid } from "lucide-react";
 
@@ -11,8 +12,8 @@ const projectData = [
     title: "Auraaz",
     description: "A next-generation digital experience platform. Focused on high-performance interactions and scalable core architecture.",
     tags: ["Next.js 14", "TypeScript", "Tailwind"],
-    link: "https://github.com/PrakharWadhwani/Auraaz",
-    status: "In Progress"
+    link: "https://auraaz.vercel.app",
+    status: "Live"
   },
   {
     id: "watch-party",
@@ -29,11 +30,11 @@ const projectData = [
     title: "Kraya & Kuber Identity",
     description: "Developed comprehensive visual branding and marketing assets for the premier Marketing & Finance society at KIIT.",
     tags: ["Brand Design", "Visuals", "Marketing"],
-    isDropdown: true, // Tells our code this is an accordion, not a normal link
+    isDropdown: true,
     dropdownItems: [
-      { label: "Happy New Year 2025", url: "https://www.instagram.com/p/DS8GChME7nH/?igsh=MXQzNmQzYmw1Nmt2ZA==" },
-      { label: "Eid Mubarak", url: "https://www.instagram.com/p/DH2lp8exWwK/?igsh=OHdhOTFjZHF2Y2ps" },
-      { label: "Lal Bahadur Shastri", url: "https://www.instagram.com/p/DPRw2RcE4Js/?igsh=MW9pYmdxbTkwaGZpMA==" }
+      { label: "Happy New Year 2025", url: "https://www.instagram.com/p/DS8GChME7nH/" },
+      { label: "Eid Mubarak", url: "https://www.instagram.com/p/DH2lp8exWwK/" },
+      { label: "Lal Bahadur Shastri", url: "https://www.instagram.com/p/DPRw2RcE4Js/" }
     ],
     status: "Archived" 
   },
@@ -41,7 +42,7 @@ const projectData = [
     id: "private-portfolio",
     category: "Bespoke UI/UX",
     title: "Private Portfolio Architecture",
-    description: "A luxury-focused personal brand identity and digital portfolio. Engineered with refined typography and an editorial layout.",
+    description: "A luxury-focused personal brand identity and digital portfolio.",
     tags: ["Next.js", "UX Architecture", "Typography"],
     link: "#",
     status: "Private"
@@ -49,7 +50,6 @@ const projectData = [
 ];
 
 export default function Projects() {
-  // State to track which dropdown is open
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const toggleDropdown = (id: string) => {
@@ -58,73 +58,99 @@ export default function Projects() {
 
   return (
     <section id="work" className={styles.section}>
-      <p className={styles.label}>// Selected Works</p>
-      <div className={styles.list}>
-        {projectData.map((project) => (
-          <div key={project.id} className={styles.card_wrapper}>
-            
-            {/* If it's a dropdown, render a div we can click. If not, render a standard link */}
-            {project.isDropdown ? (
-              <div 
-                className={`${styles.card} ${styles.dropdown_card} ${openDropdown === project.id ? styles.card_open : ''}`}
-                onClick={() => toggleDropdown(project.id)}
-              >
-                <div className={styles.info}>
-                  <div className={styles.meta}>
-                     <span className={styles.category}>{project.category}</span>
-                  </div>
-                  <h3 className={styles.title}>{project.title}</h3>
-                  <p className={styles.desc}>{project.description}</p>
-                  <div className={styles.tags}>
-                    {project.tags.map(tag => (
-                      <span key={tag} className={styles.tag}>{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <div className={styles.arrow}>
-                  <ChevronDown size={28} strokeWidth={1.2} className={openDropdown === project.id ? styles.rotated : ''} />
-                </div>
-              </div>
-            ) : (
-              <a 
-                href={project.link} 
-                target={project.status === "Private" ? "_self" : "_blank"}
-                className={`${styles.card} ${project.status === "Private" ? styles.disabled : ""}`}
-              >
-                <div className={styles.info}>
-                  <div className={styles.meta}>
-                     <span className={styles.category}>{project.category}</span>
-                     {project.status === "In Progress" && <span className={styles.badge}>Live Soon</span>}
-                  </div>
-                  <h3 className={styles.title}>{project.title}</h3>
-                  <p className={styles.desc}>{project.description}</p>
-                  <div className={styles.tags}>
-                    {project.tags.map(tag => (
-                      <span key={tag} className={styles.tag}>{tag}</span>
-                    ))}
+      <motion.p 
+        className={styles.label}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        // Works
+      </motion.p>
+      
+      <div className={styles.grid}>
+        {projectData.map((project, index) => (
+          <motion.div 
+            key={project.id} 
+            className={styles.card_wrapper}
+            // ENTRANCE ANIMATION
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: index * 0.15 }}
+          >
+            {/* CONTINUOUS FLOATING LAYER */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{
+                duration: 5 + index, // Varied speeds to prevent robotic synchronization
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              {project.isDropdown ? (
+                <div 
+                  className={`${styles.card} ${openDropdown === project.id ? styles.card_open : ''}`}
+                  onClick={() => toggleDropdown(project.id)}
+                >
+                  <ProjectInfo project={project} />
+                  <div className={styles.arrow}>
+                    <ChevronDown size={28} strokeWidth={1.2} className={openDropdown === project.id ? styles.rotated : ''} />
                   </div>
                 </div>
-                <div className={styles.arrow}>
-                  {project.status === "Private" ? <Lock size={20} /> : <ExternalLink size={28} strokeWidth={1.2} />}
-                </div>
-              </a>
-            )}
+              ) : (
+                <a 
+                  href={project.link} 
+                  target={project.status === "Private" ? "_self" : "_blank"}
+                  className={`${styles.card} ${project.status === "Private" ? styles.disabled : ""}`}
+                >
+                  <ProjectInfo project={project} />
+                  <div className={styles.arrow}>
+                    {project.status === "Private" ? <Lock size={20} /> : <ExternalLink size={28} strokeWidth={1.2} />}
+                  </div>
+                </a>
+              )}
 
-            {/* The Dropdown Content */}
-            {project.isDropdown && openDropdown === project.id && (
-              <div className={styles.dropdown_content}>
-                {project.dropdownItems?.map((item, index) => (
-                  <a href={item.url} target="_blank" rel="noopener noreferrer" key={index} className={styles.dropdown_link}>
-                    <LayoutGrid size={18} /> {/* <--- The sleek IG grid look */}
-                    <span>{item.label}</span>
-                    <ExternalLink size={14} className={styles.external_icon} />
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
+              {/* DROPDOWN CONTENT */}
+              <AnimatePresence>
+                {project.isDropdown && openDropdown === project.id && (
+                  <motion.div 
+                    className={styles.dropdown_content}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                  >
+                    {project.dropdownItems?.map((item, i) => (
+                      <a href={item.url} target="_blank" rel="noopener noreferrer" key={i} className={styles.dropdown_link}>
+                        <LayoutGrid size={18} />
+                        <span>{item.label}</span>
+                        <ExternalLink size={14} className={styles.external_icon} />
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </motion.div>
         ))}
       </div>
     </section>
+  );
+}
+
+function ProjectInfo({ project }: { project: any }) {
+  return (
+    <div className={styles.info}>
+      <div className={styles.meta}>
+        <span className={styles.category}>{project.category}</span>
+        {project.status === "Live" && <span className={styles.badge}>Live</span>}
+      </div>
+      <h3 className={styles.title}>{project.title}</h3>
+      <p className={styles.desc}>{project.description}</p>
+      <div className={styles.tags}>
+        {project.tags.map((tag: string) => (
+          <span key={tag} className={styles.tag}>{tag}</span>
+        ))}
+      </div>
+    </div>
   );
 }

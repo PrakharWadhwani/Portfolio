@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useTheme } from "next-themes"
-import { Sun, Moon } from "lucide-react"
-import Link from "next/link"
-import styles from "./Navbar.module.css"
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion"; // Added Framer Motion
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  // Avoid hydration mismatch by waiting for mount
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  // Smooth scroll to top if already on the homepage
   const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname === "/") {
       e.preventDefault();
@@ -23,30 +22,51 @@ export default function Navbar() {
     }
   };
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
-    <nav className={styles.nav}>
+    <motion.nav 
+      className={styles.nav}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} // Custom cubic-bezier for premium feel
+    >
       <div className={styles.container}>
-        {/* Added the onClick handler here */}
         <Link href="/" className={styles.logo} onClick={scrollToTop}>
-          Prakhar<span>.</span>Wadhwani
+          Prakhar<span> </span>Wadhwani
         </Link>
 
         <div className={styles.nav_links}>
-          <Link href="/#work" className={styles.link}>Work</Link>
-          <Link href="/about" className={styles.link}>Archive</Link>
-          <Link href="/#contact" className={styles.link}>Contact</Link>
+          {[
+            { name: "Experience", href: "/#timeline" },
+            { name: "Work", href: "/#work" },
+            { name: "Archive", href: "/about" },
+            { name: "Contact", href: "/#contact" },
+          ].map((item, i) => (
+            <motion.div
+              key={item.name}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
+            >
+              <Link href={item.href} className={styles.link}>
+                {item.name}
+              </Link>
+            </motion.div>
+          ))}
           
-          <button 
+          <motion.button 
             className={styles.toggle_btn}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             aria-label="Toggle Theme"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.8 }}
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          </motion.button>
         </div>
       </div>
-    </nav>
-  )
+    </motion.nav>
+  );
 }

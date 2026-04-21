@@ -1,3 +1,6 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import styles from "./Timeline.module.css";
 
 const experiences = [
@@ -16,21 +19,60 @@ const experiences = [
 ];
 
 export default function Timeline() {
+  // Animation for the container to stagger the items
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3, // Time between each item appearing
+      }
+    }
+  };
+
+  // Animation for individual items
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      transition: { duration: 0.6, ease: "easeOut" } 
+    }
+  };
+
   return (
-    <section className={styles.section}>
-      <p className={styles.label}>// Experience</p>
-      <div className={styles.timeline}>
+    <section id="timeline" className={styles.section}>
+      <motion.p 
+        className={styles.label}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        // Experience
+      </motion.p>
+
+      <motion.div 
+        className={styles.timeline}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }} // Triggers slightly before it enters view
+      >
         {experiences.map((exp, index) => (
-          <div key={index} className={styles.item}>
+          <motion.div 
+            key={index} 
+            className={styles.item}
+            variants={itemVariants}
+          >
             <span className={styles.year}>{exp.year}</span>
             <div className={styles.content}>
               <h3>{exp.company}</h3>
               <h4>{exp.role}</h4>
               <p>{exp.desc}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
