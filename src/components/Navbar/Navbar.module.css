@@ -112,3 +112,19 @@
     letter-spacing: 1px;
   }
 }
+
+/* src/components/Navbar/Navbar.module.css - ADD TO BOTTOM */
+
+.mobile_only {
+  display: none; /* Hide mobile trigger on desktop */
+}
+
+@media (max-width: 768px) {
+  .nav_links {
+    display: none; /* Hide desktop links on phone */
+  }
+
+  .mobile_only {
+    display: block; /* Show hamburger on phone */
+  }
+}

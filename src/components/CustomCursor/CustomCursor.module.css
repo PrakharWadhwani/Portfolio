@@ -1,0 +1,22 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  margin-top: -7px;
+  margin-left: -7px;
+  /* Removed mix-blend-mode to prevent color shifting (no more green) */
+}
+
+/* Ensure the cursor is hidden so your custom one is the focus */
+:global(body) {
+  cursor: none;
+}
+
+:global(a), :global(button) {
+  cursor: none !important;
+}

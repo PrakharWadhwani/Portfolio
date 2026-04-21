@@ -7,11 +7,14 @@ import Timeline from "../components/Timeline/Timeline";
 import Projects from "../components/Projects/Projects";
 import styles from "./page.module.css";
 import Contact from "../components/Contact/Contact";
+import CustomCursor from "../components/CustomCursor/CustomCursor";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <CustomCursor />
+
       <main className={styles.main}>
         <Hero />
         <Bento />

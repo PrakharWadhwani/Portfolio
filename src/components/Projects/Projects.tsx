@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Projects.module.css";
-import { ExternalLink, Lock, ChevronDown, LayoutGrid } from "lucide-react";
+import { ExternalLink, Lock, LayoutGrid, X } from "lucide-react";
 
 const projectData = [
   {
@@ -34,7 +34,7 @@ const projectData = [
     dropdownItems: [
       { label: "Happy New Year 2025", url: "https://www.instagram.com/p/DS8GChME7nH/" },
       { label: "Eid Mubarak", url: "https://www.instagram.com/p/DH2lp8exWwK/" },
-      { label: "Lal Bahadur Shastri", url: "https://www.instagram.com/p/DPRw2RcE4Js/" }
+      { label: "Lal Bahadur Shastri Jayanti", url: "https://www.instagram.com/p/DPRw2RcE4Js/" }
     ],
     status: "Archived" 
   },
@@ -72,30 +72,59 @@ export default function Projects() {
           <motion.div 
             key={project.id} 
             className={styles.card_wrapper}
-            // ENTRANCE ANIMATION
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: index * 0.15 }}
           >
-            {/* CONTINUOUS FLOATING LAYER */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{
-                duration: 5 + index, // Varied speeds to prevent robotic synchronization
+                duration: 5 + index,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
+              className={styles.float_layer}
             >
               {project.isDropdown ? (
                 <div 
-                  className={`${styles.card} ${openDropdown === project.id ? styles.card_open : ''}`}
+                  className={`${styles.card} ${styles.dropdown_trigger}`}
                   onClick={() => toggleDropdown(project.id)}
                 >
                   <ProjectInfo project={project} />
-                  <div className={styles.arrow}>
-                    <ChevronDown size={28} strokeWidth={1.2} className={openDropdown === project.id ? styles.rotated : ''} />
-                  </div>
+                  
+                  {/* OVERLAY CONTENT INSIDE THE CARD */}
+                  <AnimatePresence>
+                    {openDropdown === project.id && (
+                      <motion.div 
+                        className={styles.overlay}
+                        initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                        animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
+                        exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                      >
+                        <div className={styles.overlay_header}>
+                          <span>View Assets</span>
+                          <X size={20} />
+                        </div>
+                        <div className={styles.dropdown_list}>
+                          {project.dropdownItems?.map((item, i) => (
+                            <a 
+                              href={item.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              key={i} 
+                              className={styles.dropdown_link}
+                              onClick={(e) => e.stopPropagation()} 
+                            >
+                              <LayoutGrid size={18} />
+                              <span>{item.label}</span>
+                              <ExternalLink size={14} />
+                            </a>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ) : (
                 <a 
@@ -105,30 +134,10 @@ export default function Projects() {
                 >
                   <ProjectInfo project={project} />
                   <div className={styles.arrow}>
-                    {project.status === "Private" ? <Lock size={20} /> : <ExternalLink size={28} strokeWidth={1.2} />}
+                    {project.status === "Private" ? <Lock size={20} /> : <ExternalLink size={24} strokeWidth={1.2} />}
                   </div>
                 </a>
               )}
-
-              {/* DROPDOWN CONTENT */}
-              <AnimatePresence>
-                {project.isDropdown && openDropdown === project.id && (
-                  <motion.div 
-                    className={styles.dropdown_content}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                  >
-                    {project.dropdownItems?.map((item, i) => (
-                      <a href={item.url} target="_blank" rel="noopener noreferrer" key={i} className={styles.dropdown_link}>
-                        <LayoutGrid size={18} />
-                        <span>{item.label}</span>
-                        <ExternalLink size={14} className={styles.external_icon} />
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           </motion.div>
         ))}
